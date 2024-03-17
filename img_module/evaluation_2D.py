@@ -43,6 +43,42 @@ class HungarianMatcher:
         matched_indices = [(row, col) for row, col in zip(row_ind, col_ind) if cost_matrix[row, col] <= self.threshold]
 
         return matched_indices
+        
+class MetricsCalculator:
+    def __init__(self, matched_indices, predicted_boxes, true_boxes):
+        self.matched_indices = matched_indices
+        self.predicted_boxes = predicted_boxes
+        self.true_boxes = true_boxes
+
+    def calculate_metrics(self):
+        # TP, FP, FN 초기화
+        TP = len(self.matched_indices)
+        FP = len(self.predicted_boxes) - TP
+        FN = len(self.true_boxes) - TP
+
+        # Precision 계산
+        precision = TP / (TP + FP) if TP + FP != 0 else 0
+
+        # Recall 계산
+        recall = TP / (TP + FN) if TP + FN != 0 else 0
+
+        # F1 Score 계산
+        f1_score = 2 * (precision * recall) / (precision + recall) if precision + recall != 0 else 0
+
+        return precision, recall, f1_score
+
+# 매칭된 인덱스, 예측된 bounding box 리스트, 실제 bounding box 리스트를 가져옵니다.
+# 이전 예제에서의 matched_indices, predicted_boxes, true_boxes 변수들을 그대로 사용합니다.
+# 이를 바탕으로 MetricsCalculator 객체를 생성합니다.
+calculator = MetricsCalculator(matched_indices, predicted_boxes, true_boxes)
+
+# Precision, Recall, F1 Score 계산
+precision, recall, f1_score = calculator.calculate_metrics()
+
+# 결과 출력
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1 Score:", f1_score)
 
 # # 예측된 bounding box와 실제 bounding box 리스트를 생성합니다.
 # predicted_boxes = [BoundingBox(10, 10, 50, 50), BoundingBox(20, 20, 60, 60), BoundingBox(30, 30, 70, 70)]
