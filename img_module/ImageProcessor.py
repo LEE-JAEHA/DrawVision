@@ -8,11 +8,11 @@ class ImageProcessor:
     
     def add_bounding_box(self, x_min, y_min, x_max, y_max, color=(0, 255, 0), thickness=2):
         cv2.rectangle(self.image, (x_min, y_min), (x_max, y_max), color, thickness)
-        
+
     def add_bounding_box_with_comment(self, x_min, y_min, x_max, y_max, comment="", color=(0, 255, 0), thickness=2):
-            self.add_bounding_box(x_min, y_min, x_max, y_max, color, thickness)  # 기존 함수 호출
+        self.add_bounding_box(x_min, y_min, x_max, y_max, color, thickness)  # 기존 함수 호출
         if comment:
-            self.add_text(comment, x_min, y_min - 5)  # 박스 위에 코멘트 추가
+            self.add_text(comment, x_min, y_min - 5,font_scale=0.3,thickness=thickness,color=color)  # 박스 위에 코멘트 추가
         
     def add_bounding_boxes(self, boxes, color=(0, 255, 0), thickness=2):
         for box in boxes:
